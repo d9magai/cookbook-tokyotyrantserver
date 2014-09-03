@@ -38,8 +38,6 @@ tt
   end
 end
 
-execute "remove ttservctl" do
-  command "rm /usr/local/sbin/ttservctl"
-  only_if { File.exist?("/usr/local/sbin/ttservctl") }
-  action :run
+file "/usr/local/sbin/ttservctl" do
+  action :delete
 end
