@@ -13,3 +13,8 @@ Gemfile.lock
 bin/*
 .bundle/*
 
+# for eclipse
+.buildpath
+.project
+.settings
+
