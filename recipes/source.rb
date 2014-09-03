@@ -16,18 +16,18 @@ tt
 }.each do |key|
   package = node[:tokyotyrantserver][key]
 
-  remote_file "#{Chef::Config['file_cache_path']}/#{package[:name]}-#{package[:version]}.tar.gz" do
+  remote_file "#{Chef::Config[:file_cache_path]}/#{package[:name]}-#{package[:version]}.tar.gz" do
     source "http://fallabs.com/#{package[:name]}/#{package[:name]}-#{package[:version]}.tar.gz"
   end
 
   execute "extract #{package[:name]}" do
-    cwd Chef::Config['file_cache_path']
+    cwd Chef::Config[:file_cache_path]
     command "tar xf #{package[:name]}-#{package[:version]}.tar.gz"
-    not_if {File.exist?("#{Chef::Config['file_cache_path']}/#{package[:name]}-#{package[:version]}/")}
+    not_if {File.exist?("#{Chef::Config[:file_cache_path]}/#{package[:name]}-#{package[:version]}/")}
   end
 
   execute "configure && make #{package[:name]}" do
-    cwd "#{Chef::Config['file_cache_path']}/#{package[:name]}-#{package[:version]}/"
+    cwd "#{Chef::Config[:file_cache_path]}/#{package[:name]}-#{package[:version]}/"
     command <<-EOH
     ./configure
     make
