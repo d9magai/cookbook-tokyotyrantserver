@@ -20,15 +20,3 @@ tt
     provider Chef::Provider::Package::Rpm
   end
 end
-
-# put init script
-template "/etc/init.d/ttservd" do
-  source "ttservctl.erb"
-  mode "0755"
-end
-
-# register as service
-service "ttservd" do
-  supports :start => true, :status => true, :stop => true, :restart => true, :reload => true
-  action [:enable, :start]
-end
