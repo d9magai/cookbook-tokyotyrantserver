@@ -10,22 +10,17 @@ basedir="/var/ttserver"
 port="1978"
 pidfile="$basedir/pid"
 logfile="<%= node['tt']['logfile'] %>"
-#ulogdir="$basedir/ulog"
-#ulimsiz="256m"
-#sid=1
-#mhost="remotehost1"
-#mport="1978"
-#rtsfile="$basedir/rts"
 dbname="$basedir/<%= node['tt']['dbname'] %>#bnum=1000000"
 retval=0
 
+# Source function library
+. /etc/rc.d/init.d/functions
 
 # setting environment variables
 LANG=C
 LC_ALL=C
 PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
 export LANG LC_ALL PATH
-
 
 # start the server
 start(){
@@ -113,7 +108,6 @@ stop(){
   fi
 }
 
-
 # send HUP to the server for log rotation
 hup(){
   printf 'Sending HUP signal to the server of Tokyo Tyrant\n'
@@ -128,7 +122,6 @@ hup(){
   fi
 }
 
-
 # check permission
 if [ -d "$basedir" ] && ! touch "$basedir/$$" >/dev/null 2>&1
 then
@@ -136,7 +129,6 @@ then
   exit 1
 fi
 rm -f "$basedir/$$"
-
 
 # dispatch the command
 case "$1" in
@@ -146,6 +138,10 @@ start)
 stop)
   stop
   ;;
+status)
+  status -p "$pidfile" $prog
+  retval=$?
+  ;;
 restart)
   stop
   start
@@ -154,15 +150,13 @@ hup)
   hup
   ;;
 *)
-  printf 'Usage: %s {start|stop|restart|hup}\n' "$prog"
+  printf 'Usage: %s {start|stop|status|restart|hup}\n' "$prog"
   exit 1
   ;;
 esac
 
-
 # exit
 exit "$retval"
 
-
-
 # END OF FILE
+
