@@ -9,8 +9,8 @@ cmd="/usr/local/bin/ttserver"
 basedir="/var/ttserver"
 port="1978"
 pidfile="$basedir/pid"
-logfile="<%= node[:tokyotyrantserver][:tt][:logfile] %>"
-dbname="$basedir/<%= node[:tokyotyrantserver][:tt][:dbname] %>#bnum=1000000"
+logfile="<%= node[:tokyotyrantserver][:logfile] %>"
+dbname="$basedir/<%= node[:tokyotyrantserver][:dbname] %>#bnum=1000000"
 retval=0
 
 # Source function library
