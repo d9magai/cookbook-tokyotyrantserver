@@ -10,45 +10,36 @@ bzip2-devel
   end
 end
 
-remote_file "#{Chef::Config['file_cache_path']}//tokyocabinet-#{node[:tokyotyrantserver][:tc][:version]}.tar.gz" do
-  source "http://fallabs.com/tokyocabinet/tokyocabinet-#{node[:tokyotyrantserver][:tc][:version]}.tar.gz"
-end
+%w{
+tc
+tt
+}.each do |key|
+  package = node[:tokyotyrantserver][key]
 
-execute "extract tokyocabinet" do
-  cwd Chef::Config['file_cache_path']
-  command "tar xf tokyocabinet-#{node[:tokyotyrantserver][:tc][:version]}.tar.gz"
-  not_if { File.exist?("#{Chef::Config['file_cache_path']}/tokyocabinet-#{node[:tokyotyrantserver][:tc][:version]}/") }
-end
+  remote_file "#{Chef::Config['file_cache_path']}/#{package[:name]}-#{package[:version]}.tar.gz" do
+    source "http://fallabs.com/#{package[:name]}/#{package[:name]}-#{package[:version]}.tar.gz"
+  end
 
-execute "configure && make tokyocabinet" do
-  cwd "#{Chef::Config['file_cache_path']}/tokyocabinet-#{node[:tokyotyrantserver][:tc][:version]}/"
-  command <<-EOH
+  execute "extract #{package[:name]}" do
+    cwd Chef::Config['file_cache_path']
+    command "tar xf #{package[:name]}-#{package[:version]}.tar.gz"
+    not_if {File.exist?("#{Chef::Config['file_cache_path']}/#{package[:name]}-#{package[:version]}/")}
+  end
+
+  execute "configure && make #{package[:name]}" do
+    cwd "#{Chef::Config['file_cache_path']}/#{package[:name]}-#{package[:version]}/"
+    command <<-EOH
     ./configure
     make
     make install
-  EOH
-  not_if { File.exist?("/usr/local/bin/tchmgr") }
-  action :run
+    EOH
+    not_if {File.exist?(package[:binarypath])}
+    action :run
+  end
 end
 
-remote_file "#{Chef::Config['file_cache_path']}/tokyotyrant-#{node[:tokyotyrantserver][:tt][:version]}.tar.gz" do
-  source "http://fallabs.com/tokyotyrant/tokyotyrant-#{node[:tokyotyrantserver][:tt][:version]}.tar.gz"
-end
-
-execute "extract tokyotyrant" do
-  cwd Chef::Config['file_cache_path']
-  command "tar xf tokyotyrant-#{node[:tokyotyrantserver][:tt][:version]}.tar.gz"
-  not_if { File.exist?("#{Chef::Config['file_cache_path']}/tokyotyrant-#{node[:tokyotyrantserver][:tt][:version]}") }
-end
-
-execute "configure && make tokyotyrant" do
-  cwd "#{Chef::Config['file_cache_path']}/tokyotyrant-#{node[:tokyotyrantserver][:tt][:version]}/"
-  command <<-EOH
-    ./configure
-    make
-    make install
-    rm /usr/local/sbin/ttservctl
-  EOH
-  not_if { File.exist?("/usr/local/bin/ttserver") }
+execute "remove ttservctl" do
+  command "rm /usr/local/sbin/ttservctl"
+  only_if { File.exist?("/usr/local/sbin/ttservctl") }
   action :run
 end
