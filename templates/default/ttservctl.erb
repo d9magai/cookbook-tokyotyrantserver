@@ -22,7 +22,6 @@ LC_ALL=C
 PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
 export LANG LC_ALL PATH
 
-
 # start the server
 start(){
   printf 'Starting the server of Tokyo Tyrant\n'
@@ -109,7 +108,6 @@ stop(){
   fi
 }
 
-
 # send HUP to the server for log rotation
 hup(){
   printf 'Sending HUP signal to the server of Tokyo Tyrant\n'
@@ -124,7 +122,6 @@ hup(){
   fi
 }
 
-
 # check permission
 if [ -d "$basedir" ] && ! touch "$basedir/$$" >/dev/null 2>&1
 then
@@ -132,7 +129,6 @@ then
   exit 1
 fi
 rm -f "$basedir/$$"
-
 
 # dispatch the command
 case "$1" in
@@ -159,10 +155,8 @@ hup)
   ;;
 esac
 
-
 # exit
 exit "$retval"
 
-
-
 # END OF FILE
+
