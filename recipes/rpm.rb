@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 %w{
-tc
-tt
+tokyocabinet
+tokyotyrant
 }.each do |key|
   package = node[:tokyotyrantserver][key]
   rpm_filename = File.basename package['url']
