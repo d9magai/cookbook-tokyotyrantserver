@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 %w{
-tokyocabinet
-tokyotyrant
+tc
+tt
 }.each do |key|
-  package = node[:tokyotyrantserver][key]
+  package = node[key]
   rpm_filename = File.basename package[:url]
 
   # rpm download
