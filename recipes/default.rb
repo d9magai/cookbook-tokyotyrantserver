@@ -1,5 +1,5 @@
 
-include_recipe "tokyotyrantserver::#{node[:tokyotyrantserver][:install_method]}"
+include_recipe "tokyotyrantserver::#{node[:tt][:install_method]}"
 
 # put init script
 template "/etc/init.d/ttservd" do
@@ -8,7 +8,7 @@ template "/etc/init.d/ttservd" do
 end
 
 # create log directory
-directory File.dirname(node[:tokyotyrantserver][:logfile]) do
+directory File.dirname(node[:tt][:logfile]) do
   action :create
   recursive true
 end
