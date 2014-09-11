@@ -5,8 +5,8 @@ default[:tt][:logfile] = "/var/log/ttserver.log"
 default[:tc][:version] = "1.4.48"
 default[:tt][:version] = "1.1.41"
 
-default[:tc][:binarypath] = '/usr/local/bin/tchmgr'
-default[:tt][:binarypath] = '/usr/local/bin/ttserver'
+default[:tc][:executable_filepath] = '/usr/local/bin/tchmgr'
+default[:tt][:executable_filepath] = '/usr/local/bin/ttserver'
 
 default[:tc][:url] = 'http://dl.bintray.com/d9magai/rpm/tokyocabinet-1.4.48-1.x86_64.rpm'
 default[:tt][:url] = 'http://dl.bintray.com/d9magai/rpm/tokyotyrant-1.1.41-1.x86_64.rpm'

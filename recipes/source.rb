@@ -35,7 +35,7 @@ tt
     make
     make install
     EOH
-    not_if {File.exist?(package[:binarypath])}
+    not_if {File.exist?(package[:executable_filepath])}
     action :run
   end
 end
